@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "mon-portfolio"
+  description: "Portfolio personnel développé avec Next.js"
+  annotations:
+    github.com/project-slug: omelkir20/app-portfolio
+    backstage.io/source-location: url:https://github.com/omelkir20/app-portfolio
+    backstage.io/view-url: https://github.com/omelkir20/app-portfolio
+  tags:
+    - nextjs
+    - portfolio
+    - docker
+  links:
+    - url: http://localhost:3000
+      title: Portfolio (déploiement local)
+    - url: https://hub.docker.com/r/omelkir/portfolio-nextjs
+      title: Image Docker Hub
+    - url: https://github.com/omelkir20/app-portfolio/actions
+      title: Pipeline CI/CD (GitHub Actions)
+spec:
+  type: website
+  lifecycle: production
+  owner: "user:default/guest"

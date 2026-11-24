@@ -1,0 +1,70 @@
+# Pipeline déclenché UNIQUEMENT depuis Backstage (workflow_dispatch).
+# Prérequis (créés automatiquement par le template Backstage) :
+#   - variable de dépôt  DOCKERHUB_USERNAME
+#   - secret de dépôt    DOCKERHUB_TOKEN
+name: ci-cd
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version de l'image Docker (ex. v1, v2, v1.1)"
+        required: true
+        default: v1
+
+env:
+  IMAGE_NAME: portfolio-nextjs
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Valider la version
+        run: |
+          if ! echo "${{ inputs.version }}" | grep -Eq '^v[0-9]+(\.[0-9]+){0,2}$'; then
+            echo "Version invalide : '${{ inputs.version }}' (attendu : v1, v2, v1.1 ...)"; exit 1
+          fi
+
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Construire l'application Next.js
+        run: npm run build
+        env:
+          NEXT_PUBLIC_APP_VERSION: ${{ inputs.version }}
+
+      - name: Configurer Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authentification Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Construire et publier l'image Docker
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: |
+            APP_VERSION=${{ inputs.version }}
+          tags: |
+            ${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ inputs.version }}
+            ${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Résumé
+        run: |
+          echo "### Image publiée" >> "$GITHUB_STEP_SUMMARY"
+          echo "\`${{ vars.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ inputs.version }}\`" >> "$GITHUB_STEP_SUMMARY"

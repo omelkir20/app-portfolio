@@ -1,0 +1,16 @@
+# Déploiement local du Portfolio.
+# Lancé automatiquement par Backstage (action portfolio:docker:deploy) avec :
+#   IMAGE_NAME=<dockerhub_user>/portfolio-nextjs   IMAGE_TAG=v1   PORT=3000
+services:
+  portfolio:
+    image: ${IMAGE_NAME:-omelkir/portfolio-nextjs}:${IMAGE_TAG:-v1}
+    container_name: mon-portfolio
+    ports:
+      - "${PORT:-3000}:3000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
