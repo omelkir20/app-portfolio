@@ -1,4 +1,7 @@
 import { profile, projects } from '@/data/profile';
+import ThemeToggle from '@/components/ThemeToggle';
+import Certifications from '@/components/Certifications';
+import DevopsProjects from '@/components/DevopsProjects';
 
 export default function Home() {
   const version = process.env.NEXT_PUBLIC_APP_VERSION || 'dev';
@@ -7,6 +10,9 @@ export default function Home() {
     <>
       <header className="hero">
         <div className="container">
+          <div className="toolbar">
+            <ThemeToggle />
+          </div>
           <img className="avatar" src="/avatar.svg" alt="" width="120" height="120" />
           <h1>{profile.fullName}</h1>
           <p className="subtitle">{profile.jobTitle}</p>
@@ -45,6 +51,9 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        <DevopsProjects />
+        <Certifications />
 
         <section id="contact">
           <h2>Contact</h2>
