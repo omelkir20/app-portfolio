@@ -3,7 +3,7 @@ export const profile = {
   fullName: "Omelkhir Rebei ",
   jobTitle: "Ingénieur DevOps & Cloud",
   bio: "Ingénieur DevOps spécialisé en Platform Engineering, conteneurisation et automatisation CI/CD.",
-  location: ,
+  location: "Tozeur",
   email: "omelkirrebei22@gmail.com",
   github: "https://github.com/",
   linkedin: "https://www.linkedin.com/in/",
