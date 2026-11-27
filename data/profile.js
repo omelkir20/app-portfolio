@@ -1,12 +1,12 @@
 // Données du portfolio — mises à jour par le Software Template "portfolio-evolve-template".
 export const profile = {
-  fullName: "Omelkhir",
+  fullName: "Omelkhir Rebei ",
   jobTitle: "Ingénieur DevOps & Cloud",
   bio: "Ingénieur DevOps spécialisé en Platform Engineering, conteneurisation et automatisation CI/CD.",
-  location: "Tozeur",
-  email: "omelkirrb5@gmail.com",
+  location: ,
+  email: "omelkirrebei22@gmail.com",
   github: "https://github.com/",
-  linkedin: "https://linkedin.com/",
+  linkedin: "https://www.linkedin.com/in/",
   skills: "Docker, Kubernetes, Terraform, GitHub Actions, Backstage, Next.js"
     .split(',')
     .map((s) => s.trim())
